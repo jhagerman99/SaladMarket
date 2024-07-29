@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Card from './components/Card'; // นำเข้า Card component
+import Card from './components/Card'; // Import Card component
 
 export default function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [amounts, setAmounts] = useState({}); // State สำหรับจัดการปริมาณของแต่ละ ingredient
+
   const categories = ["vegetable", "fruit", "Toppings", "protein", "dressing"];
 
   useEffect(() => {
@@ -22,11 +24,40 @@ export default function Home() {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category === selectedCategory ? '' : category);
   };
-
+  
   const filteredIngredients = ingredients.filter(ingredient => 
     (ingredient.ingredient.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (selectedCategory === '' || ingredient.category.toLowerCase() === selectedCategory.toLowerCase())
   );
+
+  const handleIncreaseQuantity = (id) => {
+    setAmounts(prevAmounts => ({
+      ...prevAmounts,
+      [id]: (prevAmounts[id] || 0) + 1
+    }));
+  };
+
+  const handleDecreaseQuantity = (id) => {
+    setAmounts(prevAmounts => {
+      const currentAmount = (prevAmounts[id] || 0);
+      if (currentAmount === 1) {
+        handleRemoveIngredient(id);
+        return prevAmounts;
+      }
+      return {
+        ...prevAmounts,
+        [id]: currentAmount - 1
+      };
+    });
+  };
+
+  const handleRemoveIngredient = (id) => {
+    setAmounts(prevAmounts => {
+      const newAmounts = { ...prevAmounts };
+      delete newAmounts[id];
+      return newAmounts;
+    });
+  };
 
   return (
     <div className="p-4">
@@ -56,9 +87,9 @@ export default function Home() {
       <div className="mt-8 mb-4">
         <h2 className="text-2xl font-semibold mb-2">Select Category</h2>
         <div className="flex space-x-4">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <div 
-              key={index}
+              key={category}
               className={`relative cursor-pointer w-40 h-40 rounded-2xl overflow-hidden ${selectedCategory === category ? 'shadow-selected' : ''}`}
               onClick={() => handleCategoryChange(category)}
             >
@@ -80,13 +111,44 @@ export default function Home() {
       {/* Ingredients Grid */}
       <h2 className="text-2xl font-semibold m-2">Choose your ingredients to make a salad</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 gap-y-10">
-        {filteredIngredients.map((ingredient, index) => (
-          <Card 
-            key={index} 
-            image={ingredient.image || 'images/default-image.jpg'} // ใช้ default image ถ้าไม่มีรูปภาพ
-            name={ingredient.ingredient} 
+        {filteredIngredients.map((ingredient) => (
+          <Card
+            key={ingredient.id}
+            image={ingredient.image || 'images/default-image.jpg'}
+            name={ingredient.ingredient}
             calories={ingredient.calories}
-          />
+          >
+            {amounts[ingredient.id] > 0 ? (
+              <div className="flex items-center space-x-2">
+                <button 
+                  onClick={() => handleDecreaseQuantity(ingredient.id)} 
+                  className="inline-flex items-center justify-center w-10 h-10 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+                  </svg>
+                </button>
+                <span className="text-xl">{amounts[ingredient.id]}</span>
+                <button
+                  onClick={() => handleIncreaseQuantity(ingredient.id)} 
+                  className="inline-flex items-center justify-center w-10 h-10 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={() => handleIncreaseQuantity(ingredient.id)} 
+                className="inline-flex items-center justify-center w-10 h-10 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            )}
+          </Card>
         ))}
       </div>
     </div>

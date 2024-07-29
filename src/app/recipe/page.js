@@ -23,7 +23,7 @@ export default function Recipe() {
               </h5>
               <ul className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 {recipe.ingredients.map((ingredient, idx) => (
-                  <li key={idx}>{ingredient.amount}g {ingredient.ingredient} - {ingredient.calories} cal</li>
+                  <li key={idx}>{ingredient.quantity}g {ingredient.ingredient} - {ingredient.calories} cal</li>
                 ))}
               </ul>
             </div>
