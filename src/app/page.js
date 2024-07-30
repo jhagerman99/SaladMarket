@@ -1,14 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Card from './components/Card'; // Import Card component
-import BottomBar from './components/BottomBar'; // Import BottomBar component
+import Card from './components/Card';
+import BottomBar from './components/BottomBar';
+import Modal from './components/Modal'; // Import Modal component
 
 export default function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState([]);
-  const [amounts, setAmounts] = useState({}); // State สำหรับจัดการปริมาณของแต่ละ ingredient
+  const [amounts, setAmounts] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [recipeName, setRecipeName] = useState('');
 
   const categories = ["vegetable", "fruit", "toppings", "protein", "dressing"];
 
@@ -64,6 +67,22 @@ export default function Home() {
     });
   };
 
+  const handleCreateRecipeClick = () => {
+    console.log('Clicked');
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setRecipeName('');
+  };
+
+  const handleCreateRecipe = () => {
+    // Implement any additional logic if needed after recipe creation
+    console.log('Recipe Created:', recipeName);
+    handleCloseModal();
+  };
+
   // Calculate total amount and calories
   const totalAmount = Object.values(amounts).reduce((sum, amount) => sum + amount, 0);
   const totalCalories = ingredients.reduce((sum, ingredient) => {
@@ -71,8 +90,18 @@ export default function Home() {
     return sum + (amount * ingredient.calories);
   }, 0);
 
+
+  const selectedIngredients = Object.entries(amounts).map(([id, quantity]) => {
+    const ingredient = ingredients.find(ingredient => ingredient.id === parseInt(id));
+    return {
+      ingredient: ingredient.ingredient,
+      quantity,
+      calories: ingredient.calories
+    };
+  });
+
   return (
-    <div className="p-4 pb-44">
+    <div className="mt-5 p-4 pb-44">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Let's Create...your own salad!!!</h1>
@@ -92,7 +121,7 @@ export default function Home() {
       
       {/* Image Section */}
       <div className="mb-4">
-        <img src="/images/Banner.jpg" alt="Banner" className="w-full h-64 object-cover rounded-2xl"/>
+        <img src="/Banner.jpg" alt="Banner" className="w-full h-64 object-cover rounded-2xl"/>
       </div>
       
       {/* Category Select */}
@@ -166,8 +195,18 @@ export default function Home() {
 
       {/* Conditionally Render Bottom Bar */}
       {totalAmount > 0 && (
-        <BottomBar totalAmount={totalAmount} totalCalories={totalCalories} />
+        <BottomBar totalAmount={totalAmount} totalCalories={totalCalories} onCreateRecipe={handleCreateRecipeClick} />
       )}
+
+      {/* Render Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onCreate={handleCreateRecipe}
+        recipeName={recipeName}
+        setRecipeName={setRecipeName}
+        selectedIngredients={selectedIngredients}
+      />
 
     </div>
   );

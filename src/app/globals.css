@@ -9,4 +9,9 @@
 .shadow-top {
     box-shadow: 11px -14px 16px 0px #0000001A;
   }
-  
+
+.background-image {
+    background-image: url('../../public/RecipeBg.png');
+    background-size: cover;
+    background-position: center;
+}

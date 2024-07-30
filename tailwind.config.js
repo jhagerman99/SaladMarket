@@ -17,6 +17,8 @@ module.exports = {
       },
       colors: {
         customGreen: '#2FB62D',
+        customBlue: '#012738',
+        customYellow: '#F8B602',
       }
     },
   },

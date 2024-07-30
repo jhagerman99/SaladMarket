@@ -1,24 +1,38 @@
-import React from 'react';
-import Link from 'next/link'; // เพิ่มการนำเข้า Link จาก next/link
+'use client'
 
-export default function Sidebar() {
+import React from 'react';
+import Link from 'next/link';
+import { usePathname  } from 'next/navigation';
+
+const Sidebar = () => {
+  const currentPath = usePathname();
+
   return (
-    <div className="w-64 h-screen bg-gray-800 text-white">
+    <div className="mt-10 w-64 bg-white text-center">
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-4">Sidebar</h2>
+        <h2 className="text-3xl font-bold mb-14 text-customBlue">
+          SALADMAKER<span className='text-customYellow'>.</span>
+          </h2>
         <ul>
-          <li className="mb-2">
+          <li className={`m-5 p-3 rounded-lg ${
+              currentPath === '/' ? 'bg-yellow-500 text-white' : 'text-gray-400'
+            }`}>
             <Link href="/">
-              Ingredients
+              Salad maker
             </Link>
           </li>
-          <li className="mb-2">
+          <li className={`m-5 p-3 rounded-lg ${
+              currentPath === '/recipe' ? 'bg-yellow-500 text-white' : 'text-gray-400'
+            }`}
+            >
             <Link href="/recipe">
-              Recipes
+              Recipe
             </Link>
           </li>
         </ul>
       </div>
     </div>
   );
-}
+};
+
+export default Sidebar;
