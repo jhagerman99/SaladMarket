@@ -103,7 +103,7 @@ export default function Home() {
   return (
     <div className="mt-5 p-4 pb-44">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-10">
         <h1 className="text-3xl font-bold">Let's Create...your own salad!!!</h1>
         <div className="relative">
           <svg className="absolute left-2 top-2 w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F8B602' }}>

@@ -1,25 +1,31 @@
 import { recipes } from '../../data/recipesData';
 
 export default function handler(req, res) {
-  const { method } = req;
+  const { method, query } = req;
 
   switch (method) {
     case 'GET':
-      // Get all recipes
-      res.status(200).json(recipes);
+      if (query.id) {
+        const recipe = recipes.find(recipe => recipe.id === parseInt(query.id, 10));
+        if (recipe) {
+          res.status(200).json(recipe);
+        } else {
+          res.status(404).json({ message: "Recipe not found" });
+        }
+      } else {
+        res.status(200).json(recipes);
+      }
       break;
 
     case 'POST':
-      // Create a new recipe
       const newRecipe = req.body;
       recipes.push(newRecipe);
       res.status(201).json(recipes);
       break;
 
     case 'PUT':
-      // Update an existing recipe
-      const { name, updatedRecipe } = req.body;
-      const recipeIndex = recipes.findIndex(recipe => recipe.name === name);
+      const { id, updatedRecipe } = req.body;
+      const recipeIndex = recipes.findIndex(recipe => recipe.id === id);
       if (recipeIndex !== -1) {
         recipes[recipeIndex] = updatedRecipe;
         res.status(200).json(updatedRecipe);
@@ -29,9 +35,8 @@ export default function handler(req, res) {
       break;
 
     case 'DELETE':
-      // Delete an existing recipe
-      const { name: recipeName } = req.body;
-      const newRecipes = recipes.filter(recipe => recipe.name !== recipeName);
+      const { id: deleteId } = req.body;
+      const newRecipes = recipes.filter(recipe => recipe.id !== deleteId);
       if (newRecipes.length === recipes.length) {
         res.status(404).json({ message: "Recipe not found" });
       } else {

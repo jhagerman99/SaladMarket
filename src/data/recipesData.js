@@ -1,5 +1,6 @@
 export let recipes = [
   {
+    "id": 1,
     "name": "Healthy Salad",
     "ingredients": [
       { "ingredient": "green leaf lettuce", "quantity": 1, "calories": 8 },
@@ -8,6 +9,7 @@ export let recipes = [
     ]
   },
   {
+    "id": 2,
     "name": "Fruit Smoothie",
     "ingredients": [
       { "ingredient": "mix berries", "quantity": 1, "calories": 28 },
