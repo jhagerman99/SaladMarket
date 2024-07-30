@@ -2,14 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import Card from './components/Card'; // Import Card component
+import BottomBar from './components/BottomBar'; // Import BottomBar component
 
 export default function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [amounts, setAmounts] = useState({}); // State สำหรับจัดการปริมาณของแต่ละ ingredient
 
-  const categories = ["vegetable", "fruit", "Toppings", "protein", "dressing"];
+  const categories = ["vegetable", "fruit", "toppings", "protein", "dressing"];
 
   useEffect(() => {
     fetch('/api/ingredients')
@@ -22,12 +23,16 @@ export default function Home() {
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category === selectedCategory ? '' : category);
+    setSelectedCategory(prevSelectedCategories =>
+      prevSelectedCategories.includes(category)
+        ? prevSelectedCategories.filter(c => c !== category)
+        : [...prevSelectedCategories, category]
+    );
   };
-  
+
   const filteredIngredients = ingredients.filter(ingredient => 
     (ingredient.ingredient.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (selectedCategory === '' || ingredient.category.toLowerCase() === selectedCategory.toLowerCase())
+    (selectedCategory.length === 0 || selectedCategory.includes(ingredient.category.toLowerCase()))
   );
 
   const handleIncreaseQuantity = (id) => {
@@ -59,8 +64,15 @@ export default function Home() {
     });
   };
 
+  // Calculate total amount and calories
+  const totalAmount = Object.values(amounts).reduce((sum, amount) => sum + amount, 0);
+  const totalCalories = ingredients.reduce((sum, ingredient) => {
+    const amount = amounts[ingredient.id] || 0;
+    return sum + (amount * ingredient.calories);
+  }, 0);
+
   return (
-    <div className="p-4">
+    <div className="p-4 pb-44">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Let's Create...your own salad!!!</h1>
@@ -90,7 +102,7 @@ export default function Home() {
           {categories.map((category) => (
             <div 
               key={category}
-              className={`relative cursor-pointer w-40 h-40 rounded-2xl overflow-hidden ${selectedCategory === category ? 'shadow-selected' : ''}`}
+              className={`relative cursor-pointer w-40 h-40 rounded-2xl overflow-hidden ${selectedCategory.includes(category) ? 'shadow-selected' : ''}`}
               onClick={() => handleCategoryChange(category)}
             >
               <img 
@@ -98,7 +110,7 @@ export default function Home() {
                 alt={category} 
                 className="w-full h-full object-cover"
               />
-              {selectedCategory === category && (
+              {selectedCategory.includes(category) && (
                 <svg className="absolute top-2 right-2 w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                 </svg>
@@ -151,6 +163,12 @@ export default function Home() {
           </Card>
         ))}
       </div>
+
+      {/* Conditionally Render Bottom Bar */}
+      {totalAmount > 0 && (
+        <BottomBar totalAmount={totalAmount} totalCalories={totalCalories} />
+      )}
+
     </div>
   );
 }

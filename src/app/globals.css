@@ -5,3 +5,8 @@
 .shadow-selected {
     box-shadow: 0px 4px 8px 0px #373E4440; 
 }
+
+.shadow-top {
+    box-shadow: 11px -14px 16px 0px #0000001A;
+  }
+  

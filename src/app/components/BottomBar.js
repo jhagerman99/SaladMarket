@@ -1,20 +1,23 @@
 import React from 'react';
+import '../globals.css';
 
 export default function BottomBar({ totalAmount, totalCalories, onCreateRecipe }) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 flex justify-between items-center">
-      <div>
-        <span className="font-bold text-xl">{totalAmount} Your ingredients</span>
+    <div className="fixed ml-64 bottom-0 left-0 right-0 bg-white text-white p-5 grid grid-cols-5 shadow-top">
+      <div className='col-span-4 bg-yellow-400 h-24 flex justify-between items-center m-5 rounded-lg'>
+        <div className="text-3xl ml-5 font-semibold">
+            {totalAmount} Your ingredients
+        </div>
+        <div className="text-3xl mr-5 font-semibold">
+            {totalCalories} Cal
+        </div>
       </div>
-      <div className="flex items-center space-x-4">
-        <span className="font-bold text-xl">{totalCalories} Cal</span>
-        <button 
-          onClick={onCreateRecipe} 
-          className="inline-flex items-center justify-center px-4 py-2 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"
-        >
-          Create Recipe
-        </button>
-      </div>
+      <button 
+        onClick={onCreateRecipe} 
+        className="bg-customGreen text-white py-2 rounded-lg hover:bg-yellow-600 text-3xl font-semibold"
+      >
+        Create Recipe
+      </button>
     </div>
   );
 }

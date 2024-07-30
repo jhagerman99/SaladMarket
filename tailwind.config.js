@@ -15,6 +15,9 @@ module.exports = {
       width: {
         '128': '32rem', // เพิ่มขนาดความยาวใหม่
       },
+      colors: {
+        customGreen: '#2FB62D',
+      }
     },
   },
   plugins: [],

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Card(props) {
   return (
-    <div id={props.key}>
+    <div id={props.id}>
       <div className="w-96 h-80 relative p-7 flex flex-col">
         <img className="w-full h-48 object-cover rounded-lg" src={props.image} alt={props.name} />
         <div className="pt-5 flex-grow">
