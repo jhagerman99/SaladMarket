@@ -28,18 +28,32 @@ export default function EditRecipe() {
     setRecipe({ ...recipe, ingredients: newIngredients });
   };
 
-  const handleSave = () => {
-    fetch(`/api/recipes`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: recipe.name, updatedRecipe: recipe }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      router.push('/recipes');  // Navigate back to the recipes list
-    });
+  const updateRecipe = () => {
+    if(recipe.ingredients.length>0){
+      fetch(`/api/recipes`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: recipe.id, updatedRecipe: recipe }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        router.push('/recipe');  // Navigate back to the recipes list
+      });
+    } else {
+      fetch('/api/recipes', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: recipe.id }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        router.push('/recipe');  // Navigate back to the recipes list
+      });
+    }
   };
 
   if (!recipe) {
@@ -51,7 +65,7 @@ export default function EditRecipe() {
       <h1 className="text-3xl font-bold mb-10">Edit Recipe</h1>
 
       <div className="bg-white rounded-lg p-5">
-        <h4 className='text-2xl font-bold'>Your ingredients to make a salad Recipe: <span className='text-customGreen'>{recipe.name}</span></h4>
+        <h4 className='text-2xl font-bold'>Your ingredients to make a {recipe.name} Recipe: </h4>
         <div className='my-5 pb-7 border-b border-gray-300'>
           {recipe.ingredients.map((ingredient, index) => (
             <div key={index}>
@@ -69,7 +83,7 @@ export default function EditRecipe() {
                     </div>
                 </div>
                 <div className="font-semibold text-lg text-gray-700 dark:text-gray-400">
-                    +{ingredient.calories} <span className='text-customYellow'>Cal</span>
+                    +{(ingredient.calories)} <span className='text-customYellow'>Cal</span>
                 </div>
               </div>
             </div>
@@ -84,13 +98,12 @@ export default function EditRecipe() {
         <div className='text-center mt-5'>
           <button
             className='w-full p-2 bg-customYellow text-white rounded-xl font-bold'
-            onClick={handleSave}
+            onClick={updateRecipe}
           >
             Update Recipe
           </button>
         </div>
       </div>
-      
     </div>
   );
 }

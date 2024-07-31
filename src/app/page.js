@@ -11,7 +11,6 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [amounts, setAmounts] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [recipeName, setRecipeName] = useState('');
 
   const categories = ["vegetable", "fruit", "toppings", "protein", "dressing"];
 
@@ -68,19 +67,16 @@ export default function Home() {
   };
 
   const handleCreateRecipeClick = () => {
-    console.log('Clicked');
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setRecipeName('');
   };
 
   const handleCreateRecipe = () => {
-    // Implement any additional logic if needed after recipe creation
-    console.log('Recipe Created:', recipeName);
     handleCloseModal();
+    setAmounts({});
   };
 
   // Calculate total amount and calories
@@ -203,8 +199,6 @@ export default function Home() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onCreate={handleCreateRecipe}
-        recipeName={recipeName}
-        setRecipeName={setRecipeName}
         selectedIngredients={selectedIngredients}
       />
 

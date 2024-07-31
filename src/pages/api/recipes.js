@@ -1,12 +1,12 @@
 import { recipes } from '../../data/recipesData';
 
 export default function handler(req, res) {
-  const { method, query } = req;
+  const { method } = req;
 
   switch (method) {
     case 'GET':
-      if (query.id) {
-        const recipe = recipes.find(recipe => recipe.id === parseInt(query.id, 10));
+      if (req.query.id) {
+        const recipe = recipes.find(recipe => recipe.id === parseInt(req.query.id));
         if (recipe) {
           res.status(200).json(recipe);
         } else {
@@ -18,7 +18,10 @@ export default function handler(req, res) {
       break;
 
     case 'POST':
+      // Create a new recipe with a unique ID
       const newRecipe = req.body;
+      const newId = recipes.length ? recipes[recipes.length - 1].id + 1 : 1;
+      newRecipe.id = newId;
       recipes.push(newRecipe);
       res.status(201).json(recipes);
       break;

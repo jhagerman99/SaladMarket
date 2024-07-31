@@ -32,11 +32,11 @@ export default function Recipe() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: recipeToDelete.name }),
+      body: JSON.stringify({ id: recipeToDelete.id }),
     })
       .then(response => response.json())
       .then(() => {
-        setRecipes(recipes.filter(r => r.name !== recipeToDelete.name));
+        setRecipes(recipes.filter(r => r.id !== recipeToDelete.id));
         setShowModal(false);
         setRecipeToDelete(null);
       });

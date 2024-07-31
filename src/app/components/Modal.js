@@ -1,7 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
 
-const Modal = ({ isOpen, onClose, onCreate, recipeName, setRecipeName, selectedIngredients }) => {
+const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
   if (!isOpen) return null;
+
+  const [recipeName, setRecipeName] = useState('');
 
   const handleCreateRecipe = async () => {
     const newRecipe = {
