@@ -101,10 +101,10 @@ export default function Home() {
   });
 
   return (
-    <div className="mt-5 p-4 pb-44">
+    <div className="m-5 p-4 pb-44">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold">Let's Create...your own salad!!!</h1>
+      <div className="flex flex-col lg:flex-row justify-between items-center mb-5">
+        <h1 className="text-3xl font-bold mb-5 text-center">Let's Create...your own salad!!!</h1>
         <div className="relative">
           <svg className="absolute left-2 top-2 w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F8B602' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m1.76-6.33a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"></path>
@@ -114,24 +114,24 @@ export default function Home() {
             placeholder="Search ingredients..." 
             value={searchTerm}
             onChange={handleSearchChange}
-            className="p-2 border border-gray-300 rounded-lg w-128 pl-10" // เพิ่ม padding ทางซ้ายสำหรับไอคอน
+            className="p-2 rounded-lg w-128 lg:w-96 3xl:w-200 pl-10"
           />
         </div>
       </div>
       
       {/* Image Section */}
       <div className="mb-4">
-        <img src="/Banner.jpg" alt="Banner" className="w-full h-64 object-cover rounded-2xl"/>
+        <img src="/Banner.jpg" alt="Banner" className="w-full h-64 object-cover xl:object-contain 4xl:object-cover rounded-2xl"/>
       </div>
-      
+
       {/* Category Select */}
       <div className="mt-8 mb-4">
-        <h2 className="text-2xl font-semibold mb-2">Select Category</h2>
-        <div className="flex space-x-4">
+        <h2 className="text-2xl font-semibold mb-5">Select Category</h2>
+        <div className="flex flex-wrap justify-center xl:justify-start space-x-4">
           {categories.map((category) => (
             <div 
               key={category}
-              className={`relative cursor-pointer w-40 h-40 rounded-2xl overflow-hidden ${selectedCategory.includes(category) ? 'shadow-selected' : ''}`}
+              className={`mb-5 relative cursor-pointer w-40 h-40 rounded-2xl overflow-hidden ${selectedCategory.includes(category) ? 'shadow-selected' : ''}`}
               onClick={() => handleCategoryChange(category)}
             >
               <img 
@@ -150,8 +150,8 @@ export default function Home() {
       </div>
 
       {/* Ingredients Grid */}
-      <h2 className="text-2xl font-semibold m-2">Choose your ingredients to make a salad</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 gap-y-10">
+      <h2 className="text-2xl font-semibold m-2 mt-10 md:text-start text-center">Choose your ingredients to make a salad</h2>
+      <div className="grid place-items-center xl:place-items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-4 gap-y-10 mt-5">
         {filteredIngredients.map((ingredient) => (
           <Card
             key={ingredient.id}
@@ -160,7 +160,7 @@ export default function Home() {
             calories={ingredient.calories}
           >
             {amounts[ingredient.id] > 0 ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 my-5">
                 <button 
                   onClick={() => handleDecreaseQuantity(ingredient.id)} 
                   className="inline-flex items-center justify-center w-10 h-10 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"

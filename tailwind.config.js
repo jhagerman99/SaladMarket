@@ -13,12 +13,18 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       width: {
-        '128': '32rem', // เพิ่มขนาดความยาวใหม่
+        '90': '22rem',
+        '128': '32rem',
+        '200': '40rem',
       },
       colors: {
         customGreen: '#2FB62D',
         customBlue: '#012738',
         customYellow: '#F8B602',
+      },
+      screens: {
+        '3xl': '1700px',
+        '4xl': '2000px'
       }
     },
   },
