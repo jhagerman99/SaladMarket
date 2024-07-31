@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Card from './components/Card';
 import BottomBar from './components/BottomBar';
 import Modal from './components/Modal'; // Import Modal component
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -77,6 +79,7 @@ export default function Home() {
   const handleCreateRecipe = () => {
     handleCloseModal();
     setAmounts({});
+    router.push('/recipe');
   };
 
   // Calculate total amount and calories
