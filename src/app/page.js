@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Card from './components/Card';
 import BottomBar from './components/BottomBar';
 import Modal from './components/Modal'; // Import Modal component
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
@@ -19,7 +19,8 @@ export default function Home() {
   useEffect(() => {
     fetch('/api/ingredients')
       .then(response => response.json())
-      .then(data => setIngredients(data));
+      .then(data => setIngredients(data))
+      .catch(error => console.error('Error fetching ingredients:', error));
   }, []);
 
   const handleSearchChange = (e) => {
@@ -89,7 +90,7 @@ export default function Home() {
     return sum + (amount * ingredient.calories);
   }, 0);
 
-
+  
   const selectedIngredients = Object.entries(amounts).map(([id, quantity]) => {
     const ingredient = ingredients.find(ingredient => ingredient.id === parseInt(id));
     return {
@@ -134,7 +135,7 @@ export default function Home() {
               onClick={() => handleCategoryChange(category)}
             >
               <img 
-                src={`/images/${category}.jpg`} 
+                src={`/images/category/${category}.jpg`} 
                 alt={category} 
                 className="w-full h-full object-cover"
               />

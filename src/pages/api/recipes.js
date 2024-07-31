@@ -18,12 +18,12 @@ export default function handler(req, res) {
       break;
 
     case 'POST':
-      // Create a new recipe with a unique ID
       const newRecipe = req.body;
       const newId = recipes.length ? recipes[recipes.length - 1].id + 1 : 1;
       newRecipe.id = newId;
       recipes.push(newRecipe);
-      res.status(201).json(recipes);
+      console.log('New recipe created:', newRecipe);  // Logging
+      res.status(201).json(newRecipe);
       break;
 
     case 'PUT':

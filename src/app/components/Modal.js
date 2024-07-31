@@ -11,8 +11,9 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
       name: recipeName,
       ingredients: selectedIngredients
     };
-
+  
     try {
+      console.log('Creating new recipe:', newRecipe);
       const response = await fetch('/api/recipes', {
         method: 'POST',
         headers: {
@@ -20,11 +21,13 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
         },
         body: JSON.stringify(newRecipe)
       });
-
+  
       if (response.ok) {
+        const createdRecipe = await response.json();
+        console.log('Recipe created:', createdRecipe);
         onCreate();
       } else {
-        console.error('Failed to create recipe');
+        console.error('Failed to create recipe', await response.text());
       }
     } catch (error) {
       console.error('Error creating recipe:', error);

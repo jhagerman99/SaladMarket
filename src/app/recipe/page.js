@@ -11,15 +11,23 @@ export default function Recipe() {
 
   const calculateTotalCalories = (ingredients) => {
     return ingredients.reduce((total, ingredient) => {
-      return total + ingredient.calories;
+      return total + ingredient.calories*ingredient.quantity;
     }, 0);
   };
 
   useEffect(() => {
-    fetch('/api/recipes')
-      .then(response => response.json())
-      .then(data => setRecipes(data));
+    fetchRecipes();
   }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch('/api/recipes');
+      const data = await response.json();
+      setRecipes(data);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
 
   const handleDeleteClick = (recipe) => {
     setRecipeToDelete(recipe);
