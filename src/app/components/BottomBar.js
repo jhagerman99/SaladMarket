@@ -3,7 +3,7 @@ import '../globals.css';
 
 const  BottomBar = ({ totalAmount, totalCalories, onCreateRecipe }) => {
   return (
-    <div className="fixed ml-80 bottom-0 left-0 right-0 bg-white text-white p-5 grid grid-cols-5 gap-5 shadow-top">
+    <div className="fixed lg:ml-64 2xl:ml-80 bottom-0 left-0 right-0 bg-white text-white p-5 grid grid-cols-5 gap-5 shadow-top">
       <div className='col-span-4 bg-yellow-400 h-20 flex justify-between items-center rounded-lg'>
         <div className="text-2xl ml-5 font-semibold">
             <span className='bg-white p-2 px-4 rounded-lg text-yellow-400'>{totalAmount}</span> Your ingredients

@@ -60,7 +60,6 @@ const Recipe = () => {
   return (
     <div className='m-4 mt-10 h-screen'>
       <h1 className="text-3xl font-bold mb-10">Recipes</h1>
-
       <div className="bg-white rounded-lg p-5">
         <h4 className='mb-5 text-lg font-bold'>Your recipe</h4>
         <div className='flex flex-wrap gap-5'>

@@ -89,6 +89,7 @@ export default function Home() {
 
   return (
     <div className="m-5 p-4 pb-44">
+      {/* Header Section */}
       <header className="flex flex-col lg:flex-row justify-between items-center mb-5">
         <h1 className="text-3xl font-bold mb-5 text-center">Let's Create...your own salad!!!</h1>
         <div className="relative">
@@ -105,10 +106,12 @@ export default function Home() {
         </div>
       </header>
       
+      {/* Banner Section */}
       <div className="mb-4">
         <img src="/Banner.jpg" alt="Banner" className="w-full h-64 object-cover xl:object-contain 4xl:object-cover rounded-2xl"/>
       </div>
 
+      {/* Category Select */}
       <section className="mt-8 mb-4">
         <h2 className="text-2xl font-semibold mb-5">Select Category</h2>
         <div className="flex flex-wrap justify-center xl:justify-start space-x-4">
@@ -133,6 +136,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Ingredients Grid */}
       <section>
         <h2 className="text-2xl font-semibold mt-10 md:text-start text-center">Choose your ingredients to make a salad</h2>
         <div className="grid place-items-center xl:place-items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-4 gap-y-10 mt-10">
