@@ -21,7 +21,9 @@ cd SaladMaket
 Install dependencies:
 
 npm install
+
 npm install react react-dom
+
 npm install react-icons --save
 
 
