@@ -21,11 +21,12 @@ module.exports = {
         customGreen: '#2FB62D',
         customBlue: '#012738',
         customYellow: '#F8B602',
+        customBlack: '#2E2E2E'
       },
       screens: {
         '3xl': '1700px',
         '4xl': '2000px'
-      }
+      },
     },
   },
   plugins: [],

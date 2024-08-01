@@ -4,40 +4,50 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const fetchIngredients = async () => {
-  const response = await fetch('/api/ingredients');
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch('/api/ingredients');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching ingredients:', error);
+    return [];
+  }
 };
 
 const findImagePath = (ingredientName, ingredients) => {
   const ingredient = ingredients.find(item => item.ingredient === ingredientName);
-  return ingredient ? ingredient.image : '/images/default-image.jpg'; // Path ไปยังภาพเริ่มต้น
+  return ingredient ? ingredient.image : '/images/defaultImage.jpg';
 };
 
-function EditRecipeContent() {
+const EditRecipeContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');  // Getting the query parameter
+  const id = searchParams.get('id');
   const [recipe, setRecipe] = useState(null);
   const [ingredientsData, setIngredientsData] = useState([]);
-
 
   useEffect(() => {
     fetchIngredients().then(data => setIngredientsData(data));
   }, []);
 
   useEffect(() => {
-    if (id) {
-      fetch(`/api/recipes?id=${id}`)
-        .then(response => response.json())
-        .then(data => setRecipe(data));
-    }
+    const fetchRecipe = async () => {
+      try {
+        if (id) {
+          const response = await fetch(`/api/recipes?id=${id}`);
+          const data = await response.json();
+          setRecipe(data);
+        }
+      } catch (error) {
+        console.error('Error fetching recipe:', error);
+      }
+    };
+
+    fetchRecipe();
   }, [id]);
 
   const calculateTotalCalories = (ingredients) => {
-    return ingredients.reduce((total, ingredient) => {
-      return total + ingredient.calories * ingredient.quantity;
-    }, 0);
+    return ingredients.reduce((total, ingredient) => total + ingredient.calories * ingredient.quantity, 0);
   };
 
   const handleDeleteIngredient = (index) => {
@@ -47,33 +57,27 @@ function EditRecipeContent() {
     }
   };
 
-  const updateRecipe = () => {
-    if (recipe) {
-      if (recipe.ingredients && recipe.ingredients.length > 0) {
-        fetch(`/api/recipes`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: recipe.id, updatedRecipe: recipe }),
-        })
-        .then(response => response.json())
-        .then(() => {
-          router.push('/recipe');  // Navigate back to the recipes list
-        });
-      } else {
-        fetch('/api/recipes', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: recipe.id }),
-        })
-        .then(response => response.json())
-        .then(() => {
-          router.push('/recipe');  // Navigate back to the recipes list
-        });
+  const updateRecipe = async () => {
+    try {
+      if (recipe) {
+        if (recipe.ingredients && recipe.ingredients.length > 0) {
+          await fetch(`/api/recipes`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: recipe.id, updatedRecipe: recipe }),
+          });
+          router.push('/recipe');
+        } else {
+          await fetch('/api/recipes', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: recipe.id }),
+          });
+          router.push('/recipe');
+        }
       }
+    } catch (error) {
+      console.error('Error updating recipe:', error);
     }
   };
 
@@ -81,7 +85,6 @@ function EditRecipeContent() {
     return <div>Loading...</div>;
   }
 
-  // Default to empty array if ingredients are not defined
   const ingredients = recipe.ingredients || [];
 
   return (
@@ -96,7 +99,7 @@ function EditRecipeContent() {
               <div key={index}>
                 <div className='py-2 bg-white flex justify-between'>
                   <div className='flex'>
-                    <img src={findImagePath(ingredient.ingredient, ingredientsData) || '/images/defaultImage.jpg'} className='w-20 h-20' alt={ingredient.ingredient} />
+                    <img src={findImagePath(ingredient.ingredient, ingredientsData)} className='w-20 h-20' alt={ingredient.ingredient} />
                     <div className='ml-5 flex flex-col justify-center'>
                       <h5 className="text-xl font-semibold text-black">{ingredient.ingredient}</h5>
                       <div>
@@ -107,8 +110,10 @@ function EditRecipeContent() {
                       </div>
                     </div>
                   </div>
-                  <div className="font-semibold text-lg text-gray-700 dark:text-gray-400">
-                    +{ingredient.calories} <span className='text-customYellow'>Cal</span>
+                  <div className='flex flex-col justify-center items-center'>
+                    <div className="font-semibold text-lg text-gray-700 dark:text-gray-400">
+                      +{ingredient.calories * ingredient.quantity} <span className='text-customYellow'>Cal</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -134,7 +139,7 @@ function EditRecipeContent() {
       </div>
     </div>
   );
-}
+};
 
 export default function EditRecipe() {
   return (

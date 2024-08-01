@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
   if (!isOpen) return null;
@@ -9,25 +8,25 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
   const handleCreateRecipe = async () => {
     const newRecipe = {
       name: recipeName,
-      ingredients: selectedIngredients
+      ingredients: selectedIngredients,
     };
-  
+
     try {
       console.log('Creating new recipe:', newRecipe);
       const response = await fetch('/api/recipes', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newRecipe)
+        body: JSON.stringify(newRecipe),
       });
-  
+
       if (response.ok) {
         const createdRecipe = await response.json();
         console.log('Recipe created:', createdRecipe);
         onCreate();
       } else {
-        console.error('Failed to create recipe', await response.text());
+        console.error('Failed to create recipe:', await response.text());
       }
     } catch (error) {
       console.error('Error creating recipe:', error);
@@ -37,9 +36,8 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 max-w-sm mx-auto">
-
         <h2 className="text-center text-2xl font-bold mb-4">Create Recipe</h2>
-        <input 
+        <input
           type="text"
           value={recipeName}
           onChange={(e) => setRecipeName(e.target.value)}
@@ -47,14 +45,14 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
           className="w-full p-2 border border-gray-300 rounded-lg mb-4"
         />
         <div className="flex justify-end space-x-4">
-          <button 
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="py-2 px-4 bg-gray-300 rounded-lg hover:bg-gray-400"
           >
             Cancel
           </button>
-          <button 
-            onClick={handleCreateRecipe} 
+          <button
+            onClick={handleCreateRecipe}
             className="py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600"
           >
             Create
