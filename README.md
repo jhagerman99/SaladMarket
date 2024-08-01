@@ -7,32 +7,25 @@ Setup Instructions
 
 
 Prerequisites
-
 Node.js (v14.x or later)
-
 npm (v6.x or later)
 
 
 Installation
 
 Clone the repository:
-
 git clone https://github.com/yourusername/SaladMarket.git
-
 cd SaladMaket
 
 
 Install dependencies:
 
 npm install
-
 npm install react react-dom
-
 npm install react-icons --save
 
 
 Start the server:
-
 npm run dev
 
 The server will start on http://localhost:3000.
