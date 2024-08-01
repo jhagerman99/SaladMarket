@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import locationSvg from '../../../public/icon/RestaurantLocation.svg';
+import Image from 'next/image';
+import { FaTimes } from 'react-icons/fa';
 
 const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
   if (!isOpen) return null;
@@ -35,27 +38,31 @@ const Modal = ({ isOpen, onClose, onCreate, selectedIngredients }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-sm mx-auto">
-        <h2 className="text-center text-2xl font-bold mb-4">Create Recipe</h2>
+      <div className="relative w-128 bg-white rounded-lg p-8 flex flex-col items-center justify-center">
+        <button onClick={onClose}className="absolute top-2 right-5 p-2 rounded-full hover:bg-gray-200">
+          <FaTimes className="text-gray-300" size={15} />
+        </button>
+        <Image src={locationSvg} alt="locationSvg" width={72} height={72} />
+        <h2 className="text-center text-xl font-bold my-4">Create Recipe</h2>
         <input
           type="text"
           value={recipeName}
           onChange={(e) => setRecipeName(e.target.value)}
-          placeholder="Enter recipe name"
-          className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+          placeholder="Input Your Recipe Name..."
+          className="w-full p-2 border border-gray-300 rounded-lg mb-10"
         />
-        <div className="flex justify-end space-x-4">
+        <div className="grid grid-cols-2 gap-4">
           <button
             onClick={onClose}
-            className="py-2 px-4 bg-gray-300 rounded-lg hover:bg-gray-400"
+            className="py-3 px-5 rounded-lg hover:bg-gray-400 font-semibold"
           >
             Cancel
           </button>
           <button
             onClick={handleCreateRecipe}
-            className="py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            className="py-3 px-5 bg-customGreen text-white rounded-lg hover:bg-green-600 font-semibold"
           >
-            Create
+            Create New Recipe
           </button>
         </div>
       </div>

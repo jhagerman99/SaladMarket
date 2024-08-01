@@ -3,6 +3,9 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import DeleteModal from '../components/DeleteModal';
+import Image from 'next/image';
+import deleteIcon from '../../../public/icon/mi_delete.svg'
+import editIcon from '../../../public/icon/bx_edit.svg'
 
 const fetchRecipes = async () => {
   try {
@@ -40,10 +43,9 @@ const Recipe = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await fetch('/api/recipes', {
+      await fetch(`/api/recipes?id=${recipeToDelete.id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: recipeToDelete.id }),
+        headers: { 'Content-Type': 'application/json' }
       });
       setRecipes(recipes.filter(r => r.id !== recipeToDelete.id));
       setShowModal(false);
@@ -71,18 +73,19 @@ const Recipe = () => {
                   {calculateTotalCalories(recipe.ingredients)} <span className='text-customYellow'>Cal</span>
                 </div>
               </div>
-              <div className='text-center mb-5'>
-                <button
-                  className='w-36 p-2 mr-2 bg-white rounded-3xl text-rose-500 font-bold'
+              <div className='grid grid-cols-2 gap-4 mb-5 mx-5'>
+                <button className='flex justify-center space-x-2 py-2 px-4 bg-white rounded-3xl text-rose-500 font-medium'
                   onClick={() => handleDeleteClick(recipe)}
                 >
-                  Delete
+                  <Image src={deleteIcon} alt="deleteIcon" width={24} height={24}/>
+                  <span>Delete</span>
                 </button>
                 <button
-                  className='w-36 p-2 bg-white rounded-3xl text-black font-bold'
+                  className='flex justify-center space-x-2 py-2 px-4 bg-white rounded-3xl text-customBlack font-medium'
                   onClick={() => handleEditClick(recipe.id)}
                 >
-                  Edit
+                  <Image src={editIcon} alt="editIcon" width={24} height={24}/>
+                  <span>Edit</span>
                 </button>
               </div>
             </div>
@@ -95,7 +98,6 @@ const Recipe = () => {
           show={showModal}
           onClose={() => setShowModal(false)}
           onConfirm={handleConfirmDelete}
-          recipeName={recipeToDelete?.name}
         />
       )}
     </div>

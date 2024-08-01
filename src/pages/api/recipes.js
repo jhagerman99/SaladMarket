@@ -15,7 +15,7 @@ export default function handler(req, res) {
       handlePutRequest(res, body);
       break;
     case 'DELETE':
-      handleDeleteRequest(res, body);
+      handleDeleteRequest(res, id);
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
@@ -40,8 +40,8 @@ const handlePostRequest = (res, newRecipe) => {
   res.status(201).json(newRecipe);
 };
 
-const handlePutRequest = (res, { id, updatedRecipe }) => {
-  const recipeIndex = recipes.findIndex(recipe => recipe.id === id);
+const handlePutRequest = (res, updatedRecipe) => {
+  const recipeIndex = recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
   if (recipeIndex !== -1) {
     recipes[recipeIndex] = updatedRecipe;
     res.status(200).json(updatedRecipe);
@@ -50,9 +50,9 @@ const handlePutRequest = (res, { id, updatedRecipe }) => {
   }
 };
 
-const handleDeleteRequest = (res, { id }) => {
+const handleDeleteRequest = (res, id) => {
   const initialLength = recipes.length;
-  const updatedRecipes = recipes.filter(recipe => recipe.id !== id);
+  const updatedRecipes = recipes.filter(recipe => recipe.id !== parseInt(id));
   if (updatedRecipes.length === initialLength) {
     res.status(404).json({ message: "Recipe not found" });
   } else {

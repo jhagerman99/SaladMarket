@@ -91,17 +91,17 @@ export default function Home() {
     <div className="m-5 p-4 pb-44">
       {/* Header Section */}
       <header className="flex flex-col lg:flex-row justify-between items-center mb-5">
-        <h1 className="text-3xl font-bold mb-5 text-center">Let's Create...your own salad!!!</h1>
+        <h1 className="text-4xl font-bold text-center text-customBlack">Let's Create...your own salad!!!</h1>
         <div className="relative">
           <svg className="absolute left-2 top-2 w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F8B602' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m1.76-6.33a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"></path>
           </svg>
           <input 
             type="text" 
-            placeholder="Search ingredients..." 
+            placeholder="Search ingredients to make a salad..." 
             value={searchTerm}
             onChange={handleSearchChange}
-            className="p-2 rounded-lg w-128 lg:w-96 3xl:w-200 pl-10"
+            className="p-2 rounded-lg w-128 lg:w-96 3xl:w-148 pl-10"
           />
         </div>
       </header>
@@ -112,8 +112,8 @@ export default function Home() {
       </div>
 
       {/* Category Select */}
-      <section className="mt-8 mb-4">
-        <h2 className="text-2xl font-semibold mb-5">Select Category</h2>
+      <section className="mt-5 mb-4">
+        <h2 className="text-2xl text-customBlack font-semibold mb-5">Select Category</h2>
         <div className="flex flex-wrap justify-center xl:justify-start space-x-4">
           {categories.map((category) => (
             <div 
@@ -127,8 +127,9 @@ export default function Home() {
                 className="w-full h-full object-cover"
               />
               {selectedCategories.includes(category) && (
-                <svg className="absolute top-2 right-2 w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                <svg className="absolute top-2 right-2" width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect y="0.333344" width="21" height="21" rx="10.5" fill="#2FB62D"/>
+                  <path d="M9.99309 15.5989L9.97326 15.6187L5.02344 10.6689L6.6352 9.0571L9.99315 12.415L15.3639 7.04428L16.9757 8.65604L10.013 15.6188L9.99309 15.5989Z" fill="white"/>
                 </svg>
               )}
             </div>
@@ -138,8 +139,8 @@ export default function Home() {
 
       {/* Ingredients Grid */}
       <section>
-        <h2 className="text-2xl font-semibold mt-10 md:text-start text-center">Choose your ingredients to make a salad</h2>
-        <div className="grid place-items-center xl:place-items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-4 gap-y-10 mt-10">
+        <h2 className="text-2xl font-semibold text-customBlack mt-5 md:text-start text-center">Choose your ingredients to make a salad</h2>
+        <div className="grid place-items-center xl:place-items-start sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-4 gap-y-10 mt-5">
           {filteredIngredients.map((ingredient) => (
             <Card
               key={ingredient.id}
@@ -147,9 +148,9 @@ export default function Home() {
               name={ingredient.ingredient}
               calories={ingredient.calories}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4">
                 {amounts[ingredient.id] > 0 && (
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-4">
                     <button 
                       onClick={() => handleDecreaseQuantity(ingredient.id)} 
                       className="inline-flex items-center justify-center w-10 h-10 text-white bg-yellow-500 rounded-full hover:bg-yellow-600"
@@ -158,7 +159,7 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
                       </svg>
                     </button>
-                    <span className="text-xl">{amounts[ingredient.id]}</span>
+                    <span className="text-2xl font-semibold">{amounts[ingredient.id]}</span>
                   </div>
                 )}
                 <button 

@@ -64,14 +64,13 @@ const EditRecipeContent = () => {
           await fetch(`/api/recipes`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: recipe.id, updatedRecipe: recipe }),
+            body: JSON.stringify(recipe),
           });
           router.push('/recipe');
         } else {
-          await fetch('/api/recipes', {
+          await fetch(`/api/recipes?id=${recipe.id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: recipe.id }),
           });
           router.push('/recipe');
         }
